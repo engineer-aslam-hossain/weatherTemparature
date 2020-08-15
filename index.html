@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Temperature Hot</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background: url(images/bg-image.jpg) no-repeat;
+            background-size: cover;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <form class="col-md-6 m-auto py-5 location">
+            <div class="input-group mb-3">
+                <input id="cityName" type="text" class="form-control" placeholder="Enter a location for Weather ...">
+                <div class="input-group-append">
+                    <button id="searchBtn" type="button" class="btn btn-danger">Search</button>
+                </div>
+            </div>
+        </form>
+        <div class="weather-status text-white text-center">
+            <img src="https://openweathermap.org/img/wn/02d@2x.png" alt="">
+            <h1 id="city">Dhaka</h1>
+            <h3><span>38.06</span>&deg;C</h3>
+            <h1 class="lead">Clouds</h1>
+        </div>
+    </div>
+
+    <script>
+        const searchBtn = document.getElementById('searchBtn');
+        const city = document.getElementById('cityName');
+        const key = '6ec66aee978a63584e58358ec8ae5488';
+        const form = document.querySelector('.location');
+
+        const searching = () => {
+            const searchCity = `http://api.openweathermap.org/data/2.5/weather?q=${city.value}&appid=${key}`
+            fetch(searchCity).then(res => res.json()).then(data => {
+                const des = data.weather[0].description;
+                const cityName = data.name;
+                const kelvin = data.main.temp - 273.15;
+                const temp = Math.round(kelvin)
+                const imgIcon = data.weather[0].icon;
+                const imgSrc = `https://openweathermap.org/img/wn/${imgIcon}@2x.png`;
+                document.getElementById('city').textContent = cityName;
+                document.querySelector('.lead').textContent = des;
+                document.querySelector('.weather-status span').textContent = temp;
+                document.querySelector('.weather-status img').setAttribute('src', imgSrc);
+            });
+        }
+        searchBtn.addEventListener('click', () => {
+            searching();
+        })
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            searching();
+        })
+    </script>
+
+</body>
+
+</html>
