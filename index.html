@@ -43,7 +43,7 @@
         const form = document.querySelector('.location');
 
         const searching = () => {
-            const searchCity = `http://api.openweathermap.org/data/2.5/weather?q=${city.value}&appid=${key}`
+            const searchCity = `https://api.openweathermap.org/data/2.5/weather?q=${city.value}&appid=${key}`
             fetch(searchCity).then(res => res.json()).then(data => {
                 const des = data.weather[0].description;
                 const cityName = data.name;
